@@ -9,10 +9,16 @@ import (
 func CliCommands(app *cli.App) {
   app.Commands = []cli.Command{
     {
-      Name: "Create a PasteWut",
-      Aliases: []string{"p", "paste"},
+      Name: "Create PasteWut",
+      Aliases: []string{"n", "new"},
       Usage: "Paste text to PasteWut and get a random link to share it.",
       Action: actions.CreatePasteWut,
+    },
+    {
+      Name: "Get PasteWut",
+      Aliases: []string{"g", "get"},
+      Usage: "Get the text from a PasteWut link.",
+      Action: actions.GetPasteWut,
     },
   }
 }
