@@ -17,7 +17,7 @@ func CliCommands(app *cli.App) {
     {
       Name: "Get PasteWut",
       Aliases: []string{"g", "get"},
-      Usage: "Get the text from a PasteWut link.",
+      Usage: "Get the Contents of a PasteWut from the code",
       Action: actions.GetPasteWut,
     },
   }
