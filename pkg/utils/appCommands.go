@@ -20,5 +20,11 @@ func CliCommands(app *cli.App) {
       Usage: "Get the Contents of a PasteWut from the code",
       Action: actions.GetPasteWut,
     },
+    {
+      Name: "PasteWut from Clipboard",
+      Aliases: []string{"c", "clip"},
+      Usage: "Paste text from clipboard to PasteWut and get a random link to share it.",
+      Action: actions.CreatePasteWutFromClipboard,
+    },
   }
 }
