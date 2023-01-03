@@ -46,7 +46,7 @@ func CreatePasteWut(c *cli.Context) {
   requestBody := bytes.NewBuffer(postBody)
 
   // Make a request to the API
-  resp, err := http.Post("http://localhost:3000/pastewut", "application/json", requestBody)
+  resp, err := http.Post(os.Getenv("BACKEND_URL") + "/pastewut", "application/json", requestBody)
   if err != nil {
     panic(err)
   }
@@ -68,7 +68,7 @@ func GetPasteWut(c *cli.Context) {
   code := c.Args().Get(0)
 
   // Make a request to the API
-  resp, err := http.Get("http://localhost:3000/pastewut/" + code)
+  resp, err := http.Get(os.Getenv("BACKEND_URL") + "/pastewut/" + code)
   if err != nil {
     panic(err)
   }
@@ -99,7 +99,7 @@ func CreatePasteWutFromClipboard(c *cli.Context) {
   requestBody := bytes.NewBuffer(postBody)
 
   // Make a request to the API
-  resp, err := http.Post("http://localhost:3000/pastewut", "application/json", requestBody)
+  resp, err := http.Post(os.Getenv("BACKEND_URL") + "/pastewut", "application/json", requestBody)
   if err != nil {
     panic(err)
   }
@@ -117,7 +117,7 @@ func GetPasteWutToClipboard(c *cli.Context) {
   code := c.Args().Get(0)
 
   // Make a request to the API
-  resp, err := http.Get("http://localhost:3000/pastewut/" + code)
+  resp, err := http.Get(os.Getenv("BACKEND_URL") + "/pastewut/" + code)
   if err != nil {
     panic(err)
   }
