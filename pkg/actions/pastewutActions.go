@@ -11,7 +11,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
-	"golang.design/x/clipboard"
+	"github.com/atotto/clipboard"
 
 	"github.com/devmegablaster/pastewut-cli/pkg/models"
 )
@@ -85,12 +85,10 @@ func GetPasteWut(c *cli.Context) {
 }
 
 func CreatePasteWutFromClipboard(c *cli.Context) {
-  err := clipboard.Init()
+  text, err := clipboard.ReadAll()
   if err != nil {
     panic(err)
   }
-
-  text := clipboard.Read(clipboard.FmtText)
 
   postBody, _ := json.Marshal(&models.PasteWut{
     Content: string(text),
@@ -127,12 +125,7 @@ func GetPasteWutToClipboard(c *cli.Context) {
   json.NewDecoder(resp.Body).Decode(&result)
 
   // Copy the response to Clipboard
-  err = clipboard.Init()
-  if err != nil {
-    panic(err)
-  }
-
-  clipboard.Write(clipboard.FmtText, []byte(result.Content))
+  clipboard.WriteAll(result.Content)
 
   // Print the response
   fmt.Println()
