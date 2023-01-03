@@ -7,8 +7,6 @@ import (
 )
 
 func main() {
-  utils.LoadEnv()
-
   app := cli.NewApp()
   utils.CliInfo(app)
   utils.CliCommands(app)
