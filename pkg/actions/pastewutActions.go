@@ -17,13 +17,27 @@ import (
 )
 
 func CreatePasteWut(c *cli.Context) {
+  if c.Bool("clipboard") {
+    CreatePasteWutFromClipboard(c)
+    return
+  }
+
   color.Yellow("Enter the text you want to paste!")
   var text string
 
-  reader := bufio.NewReader(os.Stdin)
-  text, _ = reader.ReadString('\n')
+  scanner := bufio.NewScanner(os.Stdin)
+  var lines []string
 
-  text = strings.TrimSuffix(text, "\n")
+  for {
+    scanner.Scan()
+    line := scanner.Text()
+    if line == "" {
+      break
+    }
+    lines = append(lines, line)
+  }
+
+  text = strings.Join(lines, "\n")
 
   postBody, _ := json.Marshal(&models.PasteWut{
     Content: text,

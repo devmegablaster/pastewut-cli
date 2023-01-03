@@ -12,6 +12,12 @@ func CliCommands(app *cli.App) {
       Name: "Create PasteWut",
       Aliases: []string{"n", "new"},
       Usage: "Paste text to PasteWut and get a random link to share it.",
+      Flags: []cli.Flag{
+        cli.BoolFlag{
+          Name: "clipboard, c",
+          Usage: "Paste text from clipboard",
+        },
+      },
       Action: actions.CreatePasteWut,
     },
     {
@@ -19,12 +25,6 @@ func CliCommands(app *cli.App) {
       Aliases: []string{"g", "get"},
       Usage: "Get the Contents of a PasteWut from the code",
       Action: actions.GetPasteWut,
-    },
-    {
-      Name: "PasteWut from Clipboard",
-      Aliases: []string{"c", "clip"},
-      Usage: "Paste text from clipboard to PasteWut and get a random link to share it.",
-      Action: actions.CreatePasteWutFromClipboard,
     },
   }
 }
