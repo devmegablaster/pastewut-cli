@@ -24,6 +24,12 @@ func CliCommands(app *cli.App) {
       Name: "Get PasteWut",
       Aliases: []string{"g", "get"},
       Usage: "Get the Contents of a PasteWut from the code",
+      Flags: []cli.Flag{
+        cli.BoolFlag{
+          Name: "clipboard, c",
+          Usage: "Get contents of PasteWut to clipboard",
+        },
+      },
       Action: actions.GetPasteWut,
     },
   }
