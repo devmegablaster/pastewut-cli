@@ -9,9 +9,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/atotto/clipboard"
 	"github.com/fatih/color"
 	"github.com/urfave/cli"
-	"github.com/atotto/clipboard"
 
 	"github.com/devmegablaster/pastewut-cli/pkg/models"
 )
@@ -53,7 +53,8 @@ func CreatePasteWut(c *cli.Context) {
   // Make a request to the API
   resp, err := http.Post(BackendUrl + "pastewut/", "application/json", requestBody)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   // Decode the response
@@ -81,7 +82,13 @@ func GetPasteWut(c *cli.Context) {
   // Make a request to the API
   resp, err := http.Get(BackendUrl + "pastewut/" + code)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
+  }
+
+  if resp.StatusCode == 404 {
+    fmt.Println(color.RedString("Error: PasteWut not found!"))
+    return
   }
 
   // Decode the response
@@ -98,7 +105,8 @@ func GetPasteWut(c *cli.Context) {
 func CreatePasteWutFromClipboard(c *cli.Context) {
   text, err := clipboard.ReadAll()
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   postBody, _ := json.Marshal(&models.PasteWut{
@@ -110,7 +118,8 @@ func CreatePasteWutFromClipboard(c *cli.Context) {
   // Make a request to the API
   resp, err := http.Post(BackendUrl + "pastewut", "application/json", requestBody)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   // Decode the response
@@ -126,7 +135,8 @@ func CreatePasteWutFromFile(c *cli.Context) {
   fileName := c.String("file")
   file, err := os.Open(fileName)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   scanner := bufio.NewScanner(file)
@@ -147,7 +157,8 @@ func CreatePasteWutFromFile(c *cli.Context) {
   // Make a request to the API
   resp, err := http.Post(BackendUrl + "pastewut", "application/json", requestBody)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   // Decode the response
@@ -165,7 +176,13 @@ func GetPasteWutToClipboard(c *cli.Context) {
   // Make a request to the API
   resp, err := http.Get(BackendUrl + "pastewut/" + code)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
+  }
+
+  if resp.StatusCode == 404 {
+    fmt.Println(color.RedString("Error: PasteWut not found!"))
+    return
   }
 
   // Decode the response
@@ -190,7 +207,13 @@ func GetPasteWutToFile(c* cli.Context) {
   // Make a request to the API
   resp, err := http.Get(BackendUrl + "pastewut/" + code)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
+  }
+
+  if resp.StatusCode == 404 {
+    fmt.Println(color.RedString("Error: PasteWut not found!"))
+    return
   }
 
   // Decode the response
@@ -201,7 +224,8 @@ func GetPasteWutToFile(c* cli.Context) {
   fileName := c.String("output")
   file, err := os.Create(fileName)
   if err != nil {
-    panic(err)
+    fmt.Println(color.RedString("Error: %s", err))
+    return
   }
 
   _, err = file.WriteString(result.Content)
