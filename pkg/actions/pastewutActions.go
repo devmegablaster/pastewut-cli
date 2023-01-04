@@ -65,6 +65,12 @@ func GetPasteWut(c *cli.Context) {
     GetPasteWutToClipboard(c)
     return
   }
+
+  if c.String("output") != "" {
+    GetPasteWutToFile(c)
+    return
+  }
+
   code := c.Args().Get(0)
 
   // Make a request to the API
@@ -134,4 +140,36 @@ func GetPasteWutToClipboard(c *cli.Context) {
   color.Yellow(result.Content)
   fmt.Println()
   color.Green("The contents of your PasteWut have been copied to your clipboard!")
+}
+
+func GetPasteWutToFile(c* cli.Context) {
+  code :=  c.Args().Get(0)
+
+  // Make a request to the API
+  resp, err := http.Get(BackendUrl + "pastewut/" + code)
+  if err != nil {
+    panic(err)
+  }
+
+  // Decode the response
+  var result models.PasteWut
+  json.NewDecoder(resp.Body).Decode(&result)
+
+  // Write the response to a File
+  fileName := c.String("output")
+  file, err := os.Create(fileName)
+  if err != nil {
+    panic(err)
+  }
+
+  _, err = file.WriteString(result.Content)
+  defer file.Close()
+
+  // Print the response
+  fmt.Println()
+  color.Green("Here are the contents of your PasteWut!")
+  fmt.Println()
+  color.Yellow(result.Content)
+  fmt.Println()
+  color.Green("The contents of your PasteWut have been written to %s!", fileName)
 }

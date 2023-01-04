@@ -29,6 +29,10 @@ func CliCommands(app *cli.App) {
           Name: "clipboard, c",
           Usage: "Get contents of PasteWut to clipboard",
         },
+        cli.StringFlag{
+          Name: "output, o",
+          Usage: "Output file to write contents to",
+        },
       },
       Action: actions.GetPasteWut,
     },
