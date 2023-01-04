@@ -17,6 +17,10 @@ func CliCommands(app *cli.App) {
           Name: "clipboard, c",
           Usage: "Paste text from clipboard",
         },
+        cli.StringFlag{
+          Name: "file, f",
+          Usage: "Paste text from file",
+        },
       },
       Action: actions.CreatePasteWut,
     },

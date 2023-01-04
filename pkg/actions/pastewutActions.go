@@ -22,6 +22,11 @@ func CreatePasteWut(c *cli.Context) {
     return
   }
 
+  if c.String("file") != "" {
+    CreatePasteWutFromFile(c)
+    return
+  }
+
   color.Yellow("Enter the text you want to paste!")
   var text string
 
@@ -98,6 +103,43 @@ func CreatePasteWutFromClipboard(c *cli.Context) {
 
   postBody, _ := json.Marshal(&models.PasteWut{
     Content: string(text),
+  })
+
+  requestBody := bytes.NewBuffer(postBody)
+
+  // Make a request to the API
+  resp, err := http.Post(BackendUrl + "pastewut", "application/json", requestBody)
+  if err != nil {
+    panic(err)
+  }
+
+  // Decode the response
+  var result models.PasteWut
+  json.NewDecoder(resp.Body).Decode(&result)
+
+  // Print the response
+  fmt.Println()
+  color.Cyan("PasteWut Code: %s", color.New(color.FgHiGreen).Add(color.Bold).Add(color.Underline).Sprint(result.Code))
+}
+
+func CreatePasteWutFromFile(c *cli.Context) {
+  fileName := c.String("file")
+  file, err := os.Open(fileName)
+  if err != nil {
+    panic(err)
+  }
+
+  scanner := bufio.NewScanner(file)
+  var lines []string
+
+  for scanner.Scan() {
+    lines = append(lines, scanner.Text())
+  }
+
+  text := strings.Join(lines, "\n")
+
+  postBody, _ := json.Marshal(&models.PasteWut{
+    Content: text,
   })
 
   requestBody := bytes.NewBuffer(postBody)
