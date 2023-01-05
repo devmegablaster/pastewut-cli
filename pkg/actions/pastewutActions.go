@@ -199,7 +199,7 @@ func GetPasteWutToFile(c* cli.Context) {
   }
 
   // Write the response to a File
-  err = helpers.WriteContentToFile(result.Content, c.String("output"))
+  err = helpers.WriteContentToFile(c.String("output"), result.Content)
 
   // Print the response
   helpers.PrintPasteWutContent(result.Content)
